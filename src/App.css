@@ -95,3 +95,43 @@
   background: #f9fafb;
   text-align: left;
 }
+
+.App-batch-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8fafc;
+  text-align: left;
+}
+
+.App-batch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.75rem 0;
+}
+
+.App-batch-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: white;
+}
+
+.App-badge {
+  margin-left: auto;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.8rem;
+}
+
+.App-selected-count {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+}

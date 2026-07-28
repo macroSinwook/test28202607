@@ -7,12 +7,24 @@ type Profile = {
   email: string;
 };
 
+type Item = {
+  id: number;
+  label: string;
+  applied: boolean;
+};
+
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [submittedName, setSubmittedName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [items, setItems] = useState<Item[]>([
+    { id: 1, label: 'Item A', applied: false },
+    { id: 2, label: 'Item B', applied: false },
+    { id: 3, label: 'Item C', applied: false },
+  ]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -30,6 +42,19 @@ function App() {
     setSubmittedName(nextName);
     setIsSubmitted(true);
     setName('');
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
+    );
+  };
+
+  const applyBatch = () => {
+    setItems((prev) =>
+      prev.map((item) => (selectedIds.includes(item.id) ? { ...item, applied: true } : item))
+    );
+    setSelectedIds([]);
   };
 
   return (
@@ -50,6 +75,30 @@ function App() {
             <p>Email: {profile.email}</p>
           </div>
         )}
+
+        <section className="App-batch-section">
+          <h2>Batch Apply</h2>
+          <p>Select items and apply the same action to all selected ones.</p>
+          <div className="App-batch-list">
+            {items.map((item) => (
+              <label key={item.id} className="App-batch-item">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.includes(item.id)}
+                  onChange={() => toggleSelect(item.id)}
+                />
+                <span>{item.label}</span>
+                {item.applied && <span className="App-badge">Applied</span>}
+              </label>
+            ))}
+          </div>
+          <div className="App-actions">
+            <button className="App-button" onClick={applyBatch}>
+              Apply to Selected
+            </button>
+          </div>
+          <p className="App-selected-count">Selected: {selectedIds.length}</p>
+        </section>
       </main>
 
       {isOpen && (
