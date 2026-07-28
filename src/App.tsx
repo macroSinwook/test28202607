@@ -25,6 +25,7 @@ function App() {
     { id: 3, label: 'Item C', applied: false },
   ]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -55,6 +56,29 @@ function App() {
       prev.map((item) => (selectedIds.includes(item.id) ? { ...item, applied: true } : item))
     );
     setSelectedIds([]);
+  };
+
+  const pages = [
+    {
+      title: 'Overview',
+      content: 'This is the first page. Use the buttons to move between sections.',
+    },
+    {
+      title: 'Details',
+      content: 'This is the second page with more details about the current view.',
+    },
+    {
+      title: 'Settings',
+      content: 'This is the third page for extra controls and preferences.',
+    },
+  ];
+
+  const goToPrevious = () => {
+    setCurrentPage((prev) => (prev === 0 ? pages.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentPage((prev) => (prev === pages.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -98,6 +122,19 @@ function App() {
             </button>
           </div>
           <p className="App-selected-count">Selected: {selectedIds.length}</p>
+        </section>
+
+        <section className="App-page-section">
+          <div className="App-page-nav">
+            <button className="App-close-button" onClick={goToPrevious}>
+              ← Previous
+            </button>
+            <span className="App-page-title">{pages[currentPage].title}</span>
+            <button className="App-close-button" onClick={goToNext}>
+              Next →
+            </button>
+          </div>
+          <p className="App-page-content">{pages[currentPage].content}</p>
         </section>
       </main>
 
