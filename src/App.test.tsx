@@ -1,6 +1,21 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import App from './App';
+
+test('loads profile data from the api and displays it', async () => {
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ id: 1, name: 'Macro', email: 'macro@example.com' }),
+  }) as jest.Mock;
+
+  render(<App />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/macro/i)).toBeInTheDocument();
+  });
+
+  expect(screen.getByText(/macro@example.com/i)).toBeInTheDocument();
+});
 
 test('submits the name from the popup form', () => {
   render(<App />);

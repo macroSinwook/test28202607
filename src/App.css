@@ -86,3 +86,12 @@
   color: #15803d;
   font-weight: 600;
 }
+
+.App-profile {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  text-align: left;
+}

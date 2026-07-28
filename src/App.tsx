@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+
+type Profile = {
+  id: number;
+  name: string;
+  email: string;
+};
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [submittedName, setSubmittedName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await fetch('http://localhost:5000/api/profile');
+      const data = await response.json();
+      setProfile(data);
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,6 +42,13 @@ function App() {
         </button>
         {submittedName && (
           <p className="App-message">Thanks, {submittedName}! Your form was submitted.</p>
+        )}
+        {profile && (
+          <div className="App-profile">
+            <h2>Profile</h2>
+            <p>Name: {profile.name}</p>
+            <p>Email: {profile.email}</p>
+          </div>
         )}
       </main>
 
