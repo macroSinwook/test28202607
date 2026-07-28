@@ -186,3 +186,22 @@
   border-radius: 8px;
   background: white;
 }
+
+.App-board-link {
+  color: #3730a3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.App-board-detail {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  background: white;
+  text-align: left;
+}
+
+.App-board-meta {
+  color: #6b7280;
+  font-size: 0.95rem;
+}

@@ -23,6 +23,7 @@ type BoardPost = {
   id: number;
   title: string;
   author: string;
+  content: string;
 };
 
 function PageContent({ title, content }: PageContentProps) {
@@ -36,9 +37,9 @@ function PageContent({ title, content }: PageContentProps) {
 
 function BoardPage() {
   const posts: BoardPost[] = [
-    { id: 1, title: 'Welcome to the board', author: 'Macro' },
-    { id: 2, title: 'React routing works', author: 'Jane' },
-    { id: 3, title: 'This is a custom page component', author: 'Kim' },
+    { id: 1, title: 'Welcome to the board', author: 'Macro', content: 'This is the first board post. It introduces the sample board experience.' },
+    { id: 2, title: 'React routing works', author: 'Jane', content: 'This post shows that each item can navigate to its own detail page.' },
+    { id: 3, title: 'This is a custom page component', author: 'Kim', content: 'This page is rendered by a dedicated component for the board route.' },
   ];
 
   return (
@@ -48,11 +49,42 @@ function BoardPage() {
       <ul className="App-board-list">
         {posts.map((post) => (
           <li key={post.id} className="App-board-item">
-            <strong>{post.title}</strong>
+            <Link to={`/board/${post.id}`} className="App-board-link">
+              <strong>{post.title}</strong>
+            </Link>
             <span>by {post.author}</span>
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function BoardDetailPage() {
+  const posts: BoardPost[] = [
+    { id: 1, title: 'Welcome to the board', author: 'Macro', content: 'This is the first board post. It introduces the sample board experience.' },
+    { id: 2, title: 'React routing works', author: 'Jane', content: 'This post shows that each item can navigate to its own detail page.' },
+    { id: 3, title: 'This is a custom page component', author: 'Kim', content: 'This page is rendered by a dedicated component for the board route.' },
+  ];
+
+  const params = window.location.pathname.split('/');
+  const postId = Number(params[params.length - 1]);
+  const post = posts.find((item) => item.id === postId);
+
+  if (!post) {
+    return (
+      <div className="App-board-detail">
+        <h3>Post not found</h3>
+      </div>
+    );
+  }
+
+  return (
+    <div className="App-board-detail">
+      <h3>{post.title}</h3>
+      <p className="App-board-meta">by {post.author}</p>
+      <p>{post.content}</p>
+      <Link to="/board" className="App-board-link">← Back to board</Link>
     </div>
   );
 }
@@ -184,6 +216,7 @@ function App() {
             <Route path="/overview" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
             <Route path="/details" element={<PageContent title="Details" content="This is the second page with more details about the current view." />} />
             <Route path="/board" element={<BoardPage />} />
+            <Route path="/board/:id" element={<BoardDetailPage />} />
             <Route path="*" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
           </Routes>
         </section>
