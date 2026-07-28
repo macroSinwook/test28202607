@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
 test('loads profile data from the api and displays it', async () => {
@@ -8,7 +9,11 @@ test('loads profile data from the api and displays it', async () => {
     json: async () => ({ id: 1, name: 'Macro', email: 'macro@example.com' }),
   }) as jest.Mock;
 
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 
   await waitFor(() => {
     expect(screen.getByText(/macro/i)).toBeInTheDocument();
@@ -18,7 +23,11 @@ test('loads profile data from the api and displays it', async () => {
 });
 
 test('submits the name from the popup form', () => {
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 
   fireEvent.click(screen.getByRole('button', { name: /open popup/i }));
   fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Alice' } });

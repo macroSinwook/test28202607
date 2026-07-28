@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 
 type Profile = {
@@ -13,6 +14,20 @@ type Item = {
   applied: boolean;
 };
 
+type PageContentProps = {
+  title: string;
+  content: string;
+};
+
+function PageContent({ title, content }: PageContentProps) {
+  return (
+    <div className="App-page-content-block">
+      <h3>{title}</h3>
+      <p>{content}</p>
+    </div>
+  );
+}
+
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
@@ -25,7 +40,8 @@ function App() {
     { id: 3, label: 'Item C', applied: false },
   ]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -59,26 +75,21 @@ function App() {
   };
 
   const pages = [
-    {
-      title: 'Overview',
-      content: 'This is the first page. Use the buttons to move between sections.',
-    },
-    {
-      title: 'Details',
-      content: 'This is the second page with more details about the current view.',
-    },
-    {
-      title: 'Settings',
-      content: 'This is the third page for extra controls and preferences.',
-    },
+    { path: '/overview', title: 'Overview', content: 'This is the first page. It is now connected to a real URL.' },
+    { path: '/details', title: 'Details', content: 'This is the second page with more details about the current view.' },
+    { path: '/settings', title: 'Settings', content: 'This is the third page for extra controls and preferences.' },
   ];
 
   const goToPrevious = () => {
-    setCurrentPage((prev) => (prev === 0 ? pages.length - 1 : prev - 1));
+    const currentIndex = pages.findIndex((page) => location.pathname === page.path);
+    const previousIndex = currentIndex <= 0 ? pages.length - 1 : currentIndex - 1;
+    navigate(pages[previousIndex].path);
   };
 
   const goToNext = () => {
-    setCurrentPage((prev) => (prev === pages.length - 1 ? 0 : prev + 1));
+    const currentIndex = pages.findIndex((page) => location.pathname === page.path);
+    const nextIndex = currentIndex === -1 || currentIndex === pages.length - 1 ? 0 : currentIndex + 1;
+    navigate(pages[nextIndex].path);
   };
 
   return (
@@ -129,12 +140,23 @@ function App() {
             <button className="App-close-button" onClick={goToPrevious}>
               ← Previous
             </button>
-            <span className="App-page-title">{pages[currentPage].title}</span>
+            <div className="App-page-links">
+              {pages.map((page) => (
+                <Link key={page.path} to={page.path} className="App-page-link">
+                  {page.title}
+                </Link>
+              ))}
+            </div>
             <button className="App-close-button" onClick={goToNext}>
               Next →
             </button>
           </div>
-          <p className="App-page-content">{pages[currentPage].content}</p>
+          <Routes>
+            <Route path="/overview" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
+            <Route path="/details" element={<PageContent title="Details" content="This is the second page with more details about the current view." />} />
+            <Route path="/settings" element={<PageContent title="Settings" content="This is the third page for extra controls and preferences." />} />
+            <Route path="*" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
+          </Routes>
         </section>
       </main>
 
