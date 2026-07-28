@@ -19,11 +19,40 @@ type PageContentProps = {
   content: string;
 };
 
+type BoardPost = {
+  id: number;
+  title: string;
+  author: string;
+};
+
 function PageContent({ title, content }: PageContentProps) {
   return (
     <div className="App-page-content-block">
       <h3>{title}</h3>
       <p>{content}</p>
+    </div>
+  );
+}
+
+function BoardPage() {
+  const posts: BoardPost[] = [
+    { id: 1, title: 'Welcome to the board', author: 'Macro' },
+    { id: 2, title: 'React routing works', author: 'Jane' },
+    { id: 3, title: 'This is a custom page component', author: 'Kim' },
+  ];
+
+  return (
+    <div className="App-board">
+      <h3>Board</h3>
+      <p>Each route can render a different component.</p>
+      <ul className="App-board-list">
+        {posts.map((post) => (
+          <li key={post.id} className="App-board-item">
+            <strong>{post.title}</strong>
+            <span>by {post.author}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -77,7 +106,7 @@ function App() {
   const pages = [
     { path: '/overview', title: 'Overview', content: 'This is the first page. It is now connected to a real URL.' },
     { path: '/details', title: 'Details', content: 'This is the second page with more details about the current view.' },
-    { path: '/settings', title: 'Settings', content: 'This is the third page for extra controls and preferences.' },
+    { path: '/board', title: 'Board', content: 'This is the board page rendered by a dedicated component.' },
   ];
 
   const goToPrevious = () => {
@@ -154,7 +183,7 @@ function App() {
           <Routes>
             <Route path="/overview" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
             <Route path="/details" element={<PageContent title="Details" content="This is the second page with more details about the current view." />} />
-            <Route path="/settings" element={<PageContent title="Settings" content="This is the third page for extra controls and preferences." />} />
+            <Route path="/board" element={<BoardPage />} />
             <Route path="*" element={<PageContent title="Overview" content="This is the first page. It is now connected to a real URL." />} />
           </Routes>
         </section>

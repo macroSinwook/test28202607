@@ -160,3 +160,29 @@
   margin-top: 0.75rem;
   color: #4b5563;
 }
+
+.App-board {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  background: #fef3c7;
+  text-align: left;
+}
+
+.App-board-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.App-board-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: white;
+}
