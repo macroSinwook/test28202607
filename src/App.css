@@ -50,5 +50,33 @@
   padding: 1.5rem;
   width: min(90vw, 320px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  text-align: left;
+}
+
+.App-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.App-label {
+  font-weight: 600;
+}
+
+.App-input {
+  padding: 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.App-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.App-message {
+  margin-top: 1rem;
+  color: #4338ca;
+  font-weight: 600;
 }
