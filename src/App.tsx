@@ -5,11 +5,13 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [submittedName, setSubmittedName] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmittedName(name.trim() || 'friend');
-    setIsOpen(false);
+    const nextName = name.trim() || 'friend';
+    setSubmittedName(nextName);
+    setIsSubmitted(true);
     setName('');
   };
 
@@ -29,28 +31,40 @@ function App() {
       {isOpen && (
         <div className="App-overlay" role="presentation" onClick={() => setIsOpen(false)}>
           <div className="App-popup" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-            <h2>Tell us your name</h2>
-            <form onSubmit={handleSubmit} className="App-form">
-              <label htmlFor="name-input" className="App-label">
-                Name
-              </label>
-              <input
-                id="name-input"
-                className="App-input"
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Enter your name"
-              />
-              <div className="App-actions">
-                <button type="submit" className="App-button">
-                  Submit
+            {isSubmitted ? (
+              <>
+                <h2>Completed</h2>
+                <p className="App-success">Thanks, {submittedName}! Your form has been completed.</p>
+                <button type="button" className="App-button" onClick={() => setIsOpen(false)}>
+                  Close
                 </button>
-                <button type="button" className="App-close-button" onClick={() => setIsOpen(false)}>
-                  Cancel
-                </button>
-              </div>
-            </form>
+              </>
+            ) : (
+              <>
+                <h2>Tell us your name</h2>
+                <form onSubmit={handleSubmit} className="App-form">
+                  <label htmlFor="name-input" className="App-label">
+                    Name
+                  </label>
+                  <input
+                    id="name-input"
+                    className="App-input"
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="Enter your name"
+                  />
+                  <div className="App-actions">
+                    <button type="submit" className="App-button">
+                      Submit
+                    </button>
+                    <button type="button" className="App-close-button" onClick={() => setIsOpen(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
           </div>
         </div>
       )}

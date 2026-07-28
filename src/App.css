@@ -80,3 +80,9 @@
   color: #4338ca;
   font-weight: 600;
 }
+
+.App-success {
+  margin: 0.5rem 0 1rem;
+  color: #15803d;
+  font-weight: 600;
+}
