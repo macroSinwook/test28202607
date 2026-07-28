@@ -1,9 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('opens the popup when the button is clicked', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole('button', { name: /open popup/i }));
+
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByText(/welcome to my popup/i)).toBeInTheDocument();
 });
